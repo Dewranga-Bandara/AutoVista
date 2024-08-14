@@ -1,22 +1,124 @@
-import { useState, ChangeEvent } from "react";
+import { useState, ChangeEvent, FormEvent } from "react";
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import OAuth from "../components/OAuth";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
+import { db } from "../firebase";
+import {
+  doc,
+  serverTimestamp,
+  setDoc,
+  collection,
+  query,
+  where,
+  getDocs,
+} from "firebase/firestore";
+import { toast } from "react-toastify";
+
+interface FormData {
+  name: string;
+  email: string;
+  password: string;
+}
+
+interface FormDataWithoutPassword extends Omit<FormData, "password"> {
+  timestamp: any;
+}
 
 export default function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
     password: "",
   });
-  const { name,email, password } = formData;
+  const { name, email, password } = formData;
+  const navigate = useNavigate();
+
   function onChange(e: ChangeEvent<HTMLInputElement>) {
     setFormData((prevState) => ({
       ...prevState,
       [e.target.id]: e.target.value,
     }));
   }
+
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    // Validation: Check if name, email, and password are provided
+    if (!name.trim()) {
+      toast.error("Please enter your full name");
+      return;
+    }
+
+    if (!email.trim()) {
+      toast.error("Please enter your email address");
+      return;
+    }
+
+    if (!password.trim()) {
+      toast.error("Please enter your password");
+      return;
+    }
+
+    try {
+      // Check if the name is already in use
+      const usersCollectionRef = collection(db, "users");
+      const nameQuery = query(usersCollectionRef, where("name", "==", name));
+      const nameQuerySnapshot = await getDocs(nameQuery);
+
+      if (!nameQuerySnapshot.empty) {
+        toast.error("This name is already in use. Please choose a different name.");
+        return;
+      }
+
+      const auth = getAuth();
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
+      if (auth.currentUser) {
+        await updateProfile(auth.currentUser, {
+          displayName: name,
+        });
+      } else {
+        toast.error("Failed to update profile: User not authenticated.");
+        return;
+      }
+
+      const user = userCredential.user;
+
+      // Create a copy of formData without password and add timestamp
+      const formDataCopy: FormDataWithoutPassword = {
+        ...formData,
+        timestamp: serverTimestamp(),
+      };
+
+      // Remove password from the copy
+      delete (formDataCopy as any).password;
+
+      await setDoc(doc(db, "users", user.uid), formDataCopy);
+      toast.success("Sign up was successful");
+      navigate("/");
+    } catch (error) {
+      if (error instanceof Error) {
+        if (error.message.includes("email-already-in-use")) {
+          toast.error("This email address is already in use. Please use a different email.");
+        } else {
+          toast.error(error.message || "Something went wrong with the registration");
+        }
+      } else {
+        toast.error("An unknown error occurred");
+      }
+    }
+  }
+
   return (
     <section>
       <h1 className="text-3xl text-center mt-6 font-bold">Sign Up</h1>
@@ -29,7 +131,7 @@ export default function SignUp() {
           />
         </div>
         <div className="w-full md:w-[67%] lg:w-[40%] lg:ml-20">
-          <form>
+          <form onSubmit={onSubmit}>
             <input
               type="text"
               id="name"
@@ -69,7 +171,7 @@ export default function SignUp() {
             </div>
             <div className="flex justify-between whitespace-nowrap text-sm sm:text-lg">
               <p className="mb-6">
-                Have a account?
+                Have an account?
                 <Link
                   to="/sign-in"
                   className="text-red-600 hover:text-red-700 transition duration-200 ease-in-out ml-1"
@@ -92,7 +194,7 @@ export default function SignUp() {
             >
               Sign up
             </button>
-            <div className="flex items-center  my-4 before:border-t before:flex-1 before:border-gray-300 after:border-t after:flex-1 after:border-gray-300">
+            <div className="flex items-center my-4 before:border-t before:flex-1 before:border-gray-300 after:border-t after:flex-1 after:border-gray-300">
               <p className="text-center font-semibold mx-4">OR</p>
             </div>
             <OAuth />
