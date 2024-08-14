@@ -1,5 +1,7 @@
-import { useState, ChangeEvent } from "react";
+import { getAuth, sendPasswordResetEmail } from "firebase/auth";
+import { useState, ChangeEvent, FormEvent } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import OAuth from "../components/OAuth";
 
 export default function ForgotPassword() {
@@ -8,6 +10,41 @@ export default function ForgotPassword() {
   function onChange(e: ChangeEvent<HTMLInputElement>) {
     setEmail(e.target.value);
   }
+
+  async function onSubmit(e: FormEvent) {
+    e.preventDefault();
+
+    if (!email) {
+      toast.error("Please enter your email address.");
+      return;
+    }
+
+    try {
+      const auth = getAuth();
+      await sendPasswordResetEmail(auth, email);
+      toast.success("If the email address is registered, a reset link has been sent.");
+    } catch (error) {
+      // Ensure the error object is properly typed
+      if (error instanceof Error) {
+        const errorCode = (error as any).code; // Access error code
+
+        switch (errorCode) {
+          case 'auth/invalid-email':
+            toast.error("The email address is not valid.");
+            break;
+          case 'auth/user-not-found':
+            toast.error("No account found with this email address.");
+            break;
+          default:
+            toast.error("Could not send reset password email. Please try again later.");
+            break;
+        }
+      } else {
+        toast.error("An unknown error occurred.");
+      }
+    }
+  }
+
   return (
     <section>
       <h1 className="text-3xl text-center mt-6 font-bold">Forgot Password</h1>
@@ -20,7 +57,7 @@ export default function ForgotPassword() {
           />
         </div>
         <div className="w-full md:w-[67%] lg:w-[40%] lg:ml-20">
-          <form>
+          <form onSubmit={onSubmit}>
             <input
               type="email"
               id="email"
@@ -32,7 +69,7 @@ export default function ForgotPassword() {
 
             <div className="flex justify-between whitespace-nowrap text-sm sm:text-lg">
               <p className="mb-6">
-                Don't have a account?
+                Don't have an account?
                 <Link
                   to="/sign-up"
                   className="text-red-600 hover:text-red-700 transition duration-200 ease-in-out ml-1"
@@ -55,7 +92,7 @@ export default function ForgotPassword() {
             >
               Send reset password
             </button>
-            <div className="flex items-center  my-4 before:border-t before:flex-1 before:border-gray-300 after:border-t after:flex-1 after:border-gray-300">
+            <div className="flex items-center my-4 before:border-t before:flex-1 before:border-gray-300 after:border-t after:flex-1 after:border-gray-300">
               <p className="text-center font-semibold mx-4">OR</p>
             </div>
             <OAuth />
