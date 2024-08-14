@@ -1,7 +1,9 @@
-import { useState, ChangeEvent } from "react";
+import { useState, ChangeEvent, FormEvent } from "react";
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import OAuth from "../components/OAuth";
+import { signInWithEmailAndPassword, getAuth } from "firebase/auth";
+import { toast } from "react-toastify";
 
 // Define the type for form data
 interface FormData {
@@ -16,6 +18,7 @@ export default function SignIn() {
     password: "",
   });
   const { email, password } = formData;
+  const navigate = useNavigate();
 
   // Type the event as ChangeEvent<HTMLInputElement>
   function onChange(e: ChangeEvent<HTMLInputElement>) {
@@ -24,6 +27,31 @@ export default function SignIn() {
       ...prevState,
       [id]: value,
     }));
+  }
+
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    // Validate email and password fields
+    if (!email) {
+      toast.error("Email is required");
+      return;
+    }
+
+    if (!password) {
+      toast.error("Password is required");
+      return;
+    }
+
+    try {
+      const auth = getAuth();
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      if (userCredential.user) {
+        navigate("/");
+      }
+    } catch (error) {
+      toast.error("Bad user credentials");
+    }
   }
 
   return (
@@ -38,7 +66,7 @@ export default function SignIn() {
           />
         </div>
         <div className="w-full md:w-[67%] lg:w-[40%] lg:ml-20">
-          <form>
+          <form onSubmit={onSubmit}> 
             <input
               type="email"
               id="email"
