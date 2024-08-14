@@ -1,6 +1,9 @@
+import { doc, updateDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import { getAuth, onAuthStateChanged, signOut, updateProfile, User } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { db } from "../firebase";
 
 interface FormData {
   name: string;
@@ -15,10 +18,11 @@ export default function Profile() {
     email: "",
   });
   const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [errors, setErrors] = useState<{ name?: string; email?: string }>({});
 
   // Fetch user data on component mount
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, (user: User | null) => {
       if (user) {
         setFormData({
           name: user.displayName || "",
@@ -36,7 +40,6 @@ export default function Profile() {
         navigate("/");
       })
       .catch((error) => {
-        // Handle sign-out error if needed
         console.error("Sign-out error:", error);
       });
   }
@@ -53,6 +56,81 @@ export default function Profile() {
     }));
   }
 
+  async function checkNameUniqueness(name: string, excludeUserId?: string) {
+    const q = query(collection(db, "users"), where("name", "==", name));
+    const querySnapshot = await getDocs(q);
+
+    // If there's a document and it's not the current user, the name is taken
+    return !querySnapshot.empty && querySnapshot.docs.every(doc => doc.id !== excludeUserId);
+  }
+
+  async function validateForm() {
+    const { name, email } = formData;
+    const newErrors: { name?: string; email?: string } = {};
+    let isValid = true;
+
+    if (!name.trim()) {
+      newErrors.name = "Name is required.";
+      isValid = false;
+    } else if (await checkNameUniqueness(name.trim(), auth.currentUser?.uid)) {
+      newErrors.name = "Name is already in use.";
+      isValid = false;
+    }
+
+    if (!email.trim()) {
+      newErrors.email = "Email is required.";
+      isValid = false;
+    } else if (!/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(email)) {
+      newErrors.email = "Invalid email format.";
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    if (!isValid) {
+      if (newErrors.name) {
+        toast.error(newErrors.name);
+      }
+      if (newErrors.email) {
+        toast.error(newErrors.email);
+      }
+    }
+    return isValid;
+  }
+
+  async function onSubmit() {
+    if (!await validateForm()) {
+      return;
+    }
+
+    try {
+      const { name } = formData;
+      const currentUser = auth.currentUser;
+
+      if (currentUser) {
+        if (currentUser.displayName !== name) {
+          if (await checkNameUniqueness(name.trim(), currentUser.uid)) {
+            toast.error("Name is already in use.");
+            return;
+          }
+
+          // Update display name in Firebase Auth
+          await updateProfile(currentUser, {
+            displayName: name,
+          });
+
+          // Update name in Firestore
+          const docRef = doc(db, "users", currentUser.uid);
+          await updateDoc(docRef, {
+            name,
+          });
+        }
+        toast.success("Profile details updated");
+      }
+    } catch (error) {
+      toast.error("Could not update the profile details");
+    }
+  }
+
   return (
     <>
       <section className="max-w-6xl mx-auto flex justify-center items-center flex-col">
@@ -60,31 +138,42 @@ export default function Profile() {
         <div className="w-full md:w-[50%] mt-6 px-3">
           <form>
             {/* Name Input */}
-            <input
-              type="text"
-              id="name"
-              value={formData.name}
-              onChange={onChange}
-              disabled={!isEditing}
-              className="mb-6 w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition ease-in-out"
-            />
+            <div className="mb-6">
+              <input
+                type="text"
+                id="name"
+                value={formData.name}
+                onChange={onChange}
+                disabled={!isEditing}
+                className={`w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition ease-in-out ${
+                  isEditing ? "bg-red-200 focus:bg-red-200" : ""
+                }`}
+              />
+              {errors.name && <p className="text-red-600 text-sm mt-1">{errors.name}</p>}
+            </div>
 
             {/* Email Input */}
-            <input
-              type="email"
-              id="email"
-              value={formData.email}
-              onChange={onChange}
-              disabled={!isEditing}
-              className="mb-6 w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition ease-in-out"
-            />
+            <div className="mb-6">
+              <input
+                type="email"
+                id="email"
+                value={formData.email}
+                onChange={onChange}
+                disabled={!isEditing}
+                className="w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition ease-in-out"
+              />
+              {errors.email && <p className="text-red-600 text-sm mt-1">{errors.email}</p>}
+            </div>
 
             <div className="flex justify-between whitespace-nowrap text-sm sm:text-lg mb-6">
               <p className="flex items-center ">
                 {isEditing ? (
                   <>
                     <span
-                      onClick={toggleEdit}
+                      onClick={async () => {
+                        await onSubmit();
+                        toggleEdit();
+                      }}
                       className="text-blue-600 hover:text-blue-700 transition ease-in-out duration-200 ml-1 cursor-pointer"
                     >
                       Save
