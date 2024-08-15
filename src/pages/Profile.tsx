@@ -1,10 +1,13 @@
-import { doc, updateDoc, collection, query, where, getDocs, orderBy } from "firebase/firestore";
+import { doc, updateDoc, collection, query, where, getDocs, orderBy, deleteDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { getAuth, onAuthStateChanged, signOut, updateProfile, User } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { db } from "../firebase";
 import ListingItem from "../components/ListingItem";
+
+import ConfirmDeleteModal from "../components/ConfirmDeleteModal";
+
 
 interface FormData {
   name: string;
@@ -15,6 +18,7 @@ interface Listing {
   id: string;
   data: any; // Define the specific type for your listing data if possible
 }
+
 
 export default function Profile() {
   const auth = getAuth();
@@ -28,6 +32,10 @@ export default function Profile() {
 
   const [listings, setListings] = useState<Listing[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+
+  const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
+  const [listingToDelete, setListingToDelete] = useState<string | null>(null);
+  
 
     // First useEffect: Handles user authentication and setting form data
     useEffect(() => {
@@ -166,6 +174,30 @@ export default function Profile() {
     }
   }
 
+  const onDelete = async (listingID: string) => {
+    if (listingToDelete !== listingID) {
+      setListingToDelete(listingID);
+      setModalIsOpen(true);
+      return;
+    }
+
+    try {
+      await deleteDoc(doc(db, "listings", listingID));
+      const updatedListings = listings.filter((listing) => listing.id !== listingID);
+      setListings(updatedListings);
+      toast.success("Successfully deleted the listing");
+    } catch (error) {
+      toast.error("Failed to delete the listing");
+      console.error("Error deleting listing:", error);
+    }
+    setModalIsOpen(false);
+    setListingToDelete(null);
+  };
+
+  const onEdit = (listingID: string) => {
+    navigate(`/edit-listing/${listingID}`);
+  };
+
   return (
     <>
       <section className="max-w-6xl mx-auto flex justify-center items-center flex-col">
@@ -254,12 +286,23 @@ export default function Profile() {
                 key={listing.id}
                 id={listing.id}
                 listing={listing.data}
+                onDelete={() => {
+                  setListingToDelete(listing.id);
+                  setModalIsOpen(true);
+                }}
+                onEdit={onEdit}
               />
             ))}
           </ul>
         </>
       )}
     </div>
+    {modalIsOpen && (
+        <ConfirmDeleteModal
+          onConfirm={() => listingToDelete && onDelete(listingToDelete)}
+          onCancel={() => setModalIsOpen(false)}
+        />
+      )}
     </>
   );
 }

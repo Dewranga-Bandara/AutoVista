@@ -2,6 +2,8 @@ import React from "react";
 import Moment from "moment";
 import { Link } from "react-router-dom";
 import { MdCarRental } from "react-icons/md";
+import { FaTrash } from "react-icons/fa";
+import { MdEdit } from "react-icons/md";
 
 interface ListingItemProps {
   listing: {
@@ -21,9 +23,12 @@ interface ListingItemProps {
     timestamp?: any; // Ensure this is a valid Date or timestamp object
   };
   id: string;
+  onEdit: (id: string) => void;
+  onDelete: (id: string) => void;
+
 }
 
-const ListingItem: React.FC<ListingItemProps> = ({ listing, id }) => {
+const ListingItem: React.FC<ListingItemProps> = ({ listing, id, onEdit, onDelete }) => {
   // Handle images - check if it's a File or a URL
   const imageUrl = listing.images.length > 0 
     ? (listing.images[0] instanceof File 
@@ -93,6 +98,29 @@ const ListingItem: React.FC<ListingItemProps> = ({ listing, id }) => {
           </div>
         </div>
       </Link>
+      <div className="w-full border-t border-gray-300 mb-2"></div>
+      <div className="mt-7 p-1 flex flex-col justify-between h-full">
+        <div className="absolute bottom-2 left-4 right-4 flex justify-between items-center">
+          {onEdit && (
+            <div
+              className="flex items-center justify-center w-7 h-7 bg-blue-500 text-white rounded-full cursor-pointer hover:bg-blue-700 transition-colors duration-200"
+              onClick={() => onEdit(id)}
+              aria-label="Edit Listing"
+            >
+              <MdEdit className="h-3 w-3" />
+            </div>
+          )}
+          {onDelete && (
+            <div
+              className="flex items-center justify-center w-7 h-7 bg-red-500 text-white rounded-full cursor-pointer hover:bg-red-700 transition-colors duration-200"
+              onClick={() => onDelete(id)}
+              aria-label="Delete Listing"
+            >
+              <FaTrash className="h-3 w-3" />
+            </div>
+          )}
+        </div>
+      </div>
     </li>
   );
 };
