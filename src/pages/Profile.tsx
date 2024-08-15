@@ -1,13 +1,19 @@
-import { doc, updateDoc, collection, query, where, getDocs } from "firebase/firestore";
+import { doc, updateDoc, collection, query, where, getDocs, orderBy } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { getAuth, onAuthStateChanged, signOut, updateProfile, User } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { db } from "../firebase";
+import ListingItem from "../components/ListingItem";
 
 interface FormData {
   name: string;
   email: string;
+}
+
+interface Listing {
+  id: string;
+  data: any; // Define the specific type for your listing data if possible
 }
 
 export default function Profile() {
@@ -20,19 +26,48 @@ export default function Profile() {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [errors, setErrors] = useState<{ name?: string; email?: string }>({});
 
-  // Fetch user data on component mount
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user: User | null) => {
-      if (user) {
-        setFormData({
-          name: user.displayName || "",
-          email: user.email || "",
-        });
-      }
-    });
+  const [listings, setListings] = useState<Listing[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
-    return () => unsubscribe();
-  }, [auth]);
+    // First useEffect: Handles user authentication and setting form data
+    useEffect(() => {
+      const unsubscribe = onAuthStateChanged(auth, (user: User | null) => {
+        if (user) {
+          setFormData({
+            name: user.displayName || '',
+            email: user.email || '',
+          });
+        }
+      });
+  
+      return () => unsubscribe();
+    }, [auth]);
+  
+    // Second useEffect: Handles fetching user listings based on the authenticated user
+    useEffect(() => {
+      async function fetchUserListings() {
+        if (auth.currentUser) {
+          const listingRef = collection(db, 'listings');
+          const q = query(
+            listingRef,
+            where('userRef', '==', auth.currentUser.uid),
+            orderBy('timestamp', 'desc')
+          );
+          const querySnap = await getDocs(q);
+          let fetchedListings: Listing[] = [];
+          querySnap.forEach((doc) => {
+            fetchedListings.push({
+              id: doc.id,
+              data: doc.data(),
+            });
+          });
+          setListings(fetchedListings);
+          setLoading(false);
+        }
+      }
+  
+      fetchUserListings();
+    }, [auth.currentUser?.uid]);
 
   function onLogout() {
     signOut(auth)
@@ -207,6 +242,24 @@ export default function Profile() {
           </form>
         </div>
       </section>
+      <div className="max-w-6xl px-3 mt-6 mx-auto">
+      {!loading && listings.length > 0 && (
+        <>
+          <h2 className="text-3xl text-center font-bold text-blue-700 mb-8">
+            My Listings
+          </h2>
+          <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {listings.map((listing) => (
+              <ListingItem
+                key={listing.id}
+                id={listing.id}
+                listing={listing.data}
+              />
+            ))}
+          </ul>
+        </>
+      )}
+    </div>
     </>
   );
 }
