@@ -1,5 +1,5 @@
 import { doc, getDoc } from "firebase/firestore";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import Spinner from "../components/Spinner";
 import { db } from "../firebase";
@@ -10,6 +10,8 @@ import "swiper/css/bundle";
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/pagination';
+import { getAuth } from "firebase/auth";
+import Contact from "../components/Contact";
 
 import { MdCalendarToday, MdCarCrash, MdCarRental, MdCarRepair, MdCopyAll, MdInsertLink, MdLink, MdLinkOff, MdLocalGasStation, MdSafetyCheck, MdShare, MdSpeed } from "react-icons/md";
 
@@ -29,10 +31,11 @@ interface ListingData {
     regularPrice: number;
     discountedPrice: number;
     images: string[];
-  // Add other properties if needed
+    userRef: string;  // User reference (user ID)
 }
 
 export default function Listing() {
+  const auth = getAuth();
   const params = useParams<{ listingId: string }>();
   const [listing, setListing] = useState<ListingData>(
     {
@@ -49,12 +52,14 @@ export default function Listing() {
     regularPrice: 0,
     discountedPrice: 0,
     images: [],
+    userRef:"",
     }
   );
   const [loading, setLoading] = useState(true);
   const [shareLinkCopied, setShareLinkCopied] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [isModalOpen, setModalOpen] = useState(false);
+  const [contactOwner, setContactOwner] = useState(false);
 
   useEffect(() => {
     async function fetchListing() {
@@ -158,6 +163,7 @@ export default function Listing() {
               Link Copied
             </p>
           )}
+
     </div>
 
     <div className="w-full flex flex-col justify-between">
@@ -165,20 +171,35 @@ export default function Listing() {
         <h1 className="text-4xl font-extrabold text-gray-900 mb-2">
           {listing.name}
         </h1>
-        <p className="text-2xl text-red-500 mt-6">
-          {listing.offer ? (
-            <span className="text-blue-500 line-through mr-2">
-              ${listing.regularPrice
-                .toString()
-                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-            </span>
-          ) : null}
-          <span>
-            ${(
-                +listing.regularPrice - +listing.discountedPrice
-            ).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-          </span>
-        </p>
+        
+        <div className="text-2xl mt-6 flex items-center space-x-4">
+  {listing.offer && (
+    <>
+      <span className="text-blue-500 line-through text-lg">
+        ${listing.regularPrice
+          .toString()
+          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+      </span>
+      <span className="text-red-600 font-bold">
+        ${(
+          +listing.regularPrice - +listing.discountedPrice
+        ).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+      </span>
+      <p className="bg-gradient-to-r from-red-500 to-red-700 text-white px-4 py-2 rounded-lg font-semibold shadow-lg ml-4">
+        ${listing.discountedPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} Off
+      </p>
+    </>
+  )}
+  {!listing.offer && (
+    <span className="text-red-600 font-bold">
+      ${listing.regularPrice
+        .toString()
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+    </span>
+  )}
+</div>
+
+
       </div>
 
       <p className="mt-2 text-lg text-gray-800 leading-relaxed">
@@ -213,15 +234,25 @@ export default function Listing() {
        </div>
 
 
-      <div className="flex justify-between items-center space-x-4 w-full mt-1">
-        <p className="cursor-pointer bg-gradient-to-r from-green-500 to-green-700 text-white px-4 py-2 rounded-lg font-semibold rounded-lg shadow-lg transition-transform transform hover:scale-105 hover:bg-gradient-to-r hover:from-green-600 hover:to-green-800">
+      <div className="flex justify-between items-center space-x-4 w-full mt-2">
+        <p className="cursor-pointer bg-gradient-to-r from-green-500 to-green-700 text-white px-16 py-2 font-semibold rounded-lg shadow-lg transition-transform transform hover:scale-105 hover:bg-gradient-to-r hover:from-green-600 hover:to-green-800">
           {listing.type === "rent" ? "Rent" : "Sale"}
         </p>
-        {listing.offer && (
-            <p className="bg-gradient-to-r from-red-500 to-red-700 text-white px-4 py-2 rounded-lg font-semibold shadow-lg">
-            ${listing.discountedPrice} Off
-          </p>
+
+        {listing.userRef === auth.currentUser?.uid && !contactOwner && (
+        <div>
+            <button
+            onClick={() => setContactOwner(true)}
+            className="cursor-pointer bg-gradient-to-r from-blue-500 to-blue-700 text-white px-16 py-2 font-semibold rounded-lg shadow-lg transition-transform transform hover:scale-105 hover:bg-gradient-to-r hover:from-blue-600 hover:to-blue-800"
+            >
+            Contact Owner
+            </button>
+        </div>
         )}
+        {contactOwner && (
+            <Contact userRef={listing.userRef} listing={listing} />
+        )}
+        
       </div>
     </div>
   </div>
