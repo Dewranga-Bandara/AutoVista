@@ -89,30 +89,37 @@ export default function CreateVehicleListing() {
     e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>
   ) {
     const { id, type, value, files, checked } = e.target as HTMLInputElement;
-
+  
     if (type === "file" && files) {
       if (files.length > 6) {
         toast.error("You can upload a maximum of 6 images.");
         return;
       }
-
+  
       const fileArray = Array.from(files);
-
+      const maxSize = 2 * 1024 * 1024; // 2MB in bytes
+  
+      for (const file of fileArray) {
+        if (file.size > maxSize) {
+          toast.error(`File ${file.name} is larger than 2MB.`);
+          return;
+        }
+      }
+  
       setFormData((prev) => ({
         ...prev,
         [id]: fileArray, // Set the selected images
       }));
-
     } else {
       setFormData((prev) => ({
         ...prev,
         [id]: type === "checkbox" ? checked : value,
       }));
     }
-
+  
     validateField(id, type, value);
   }
-
+  
   function validateField(id: string, type: string, value: string) {
     switch (id) {
       case "fuelType":
@@ -301,9 +308,6 @@ export default function CreateVehicleListing() {
         formDataCopy.discountedPrice = Number(formData.discountedPrice);
       }
 
-      delete formDataCopy.offer; // Remove offer if not needed in the Firestore document
-
-
       console.log(formDataCopy)
 
       setLoading(false);
@@ -311,6 +315,7 @@ export default function CreateVehicleListing() {
       // Add document to Firestore
       const docRef = await addDoc(collection(db, "listings"), {
         ...formDataCopy,
+        offer: formData.offer,
         timestamp: serverTimestamp(), // Add a timestamp field
       });
       toast.success("Listing created");
