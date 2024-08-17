@@ -105,19 +105,16 @@ export default function Listing() {
     <main className="bg-gray-50 min-h-screen py-7 overflow-y-hidden">
 
   <div className="m-4 flex flex-col md:flex-row max-w-6xl lg:mx-auto p-6 rounded-lg shadow-xl bg-white lg:space-x-8 overflow-y-hidden">
-    <div className="w-full h-[200px] lg:h-[400px] bg-gray-200 rounded-lg overflow-y-hidden">
+    <div className="mt-6 w-full h-[200px] lg:h-[400px] bg-gray-200 rounded-lg overflow-y-hidden justify-center items-center">
     {/* Swiper Component for Image Carousel */}
     {listing.images && listing.images.length > 0 ? (
             <Swiper
             slidesPerView={1}
-            pagination={{
-              dynamicBullets: true,
-              clickable: true,
-            }}
-            modules={[Pagination, Autoplay]}
-            className="mySwiper"
-            effect="fade"
-            autoplay={{ delay: 3000 }}
+      pagination={{ clickable: true }}
+      effect="fade"
+      modules={[EffectFade]}
+      autoplay={{ delay: 3000 }}
+      className="relative w-full h-full overflow-hidden"
             >
               {listing.images.map((url, index) => (
                 <SwiperSlide key={index}>
@@ -200,41 +197,7 @@ export default function Listing() {
 </div>
 
 
-      </div>
-
-      <p className="mt-2 text-lg text-gray-800 leading-relaxed">
-        <span className="font-medium">{listing.description}</span> 
-      </p>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6 mb-4">
-        <div className="flex items-center text-xl text-gray-700">
-            <MdCarRental className="text-green-600 mr-3" />
-            <span>{listing.manufacturer}</span>
-        </div>
-        <div className="flex items-center text-xl text-gray-700">
-            <MdCarRental className="text-green-600 mr-3" />
-            <span>{listing.model}</span>
-        </div>
-        <div className="flex items-center text-xl text-gray-700">
-            <MdSpeed className="text-green-600 mr-3" />
-            <span>{listing.mileage} miles</span>
-        </div>
-        <div className="flex items-center text-xl text-gray-700">
-            <MdCalendarToday className="text-green-600 mr-3" />
-            <span>{listing.year}</span>
-        </div>
-        <div className="flex items-center text-xl text-gray-700">
-            <MdLocalGasStation className="text-green-600 mr-3" />
-            <span>{listing.fuelType}</span>
-        </div>
-        <div className="flex items-center text-xl text-gray-700">
-            <MdCarRepair className="text-green-600 mr-3" />
-            <span>{listing.transmission}</span>
-        </div>
-       </div>
-
-
-      <div className="flex justify-between items-center space-x-4 w-full mt-2">
+<div className="flex justify-between items-center space-x-4 w-full mt-7">
         <p className="cursor-pointer bg-gradient-to-r from-green-500 to-green-700 text-white px-16 py-2 font-semibold rounded-lg shadow-lg transition-transform transform hover:scale-105 hover:bg-gradient-to-r hover:from-green-600 hover:to-green-800">
           {listing.type === "rent" ? "Rent" : "Sale"}
         </p>
@@ -254,6 +217,39 @@ export default function Listing() {
         )}
         
       </div>
+
+      </div>
+
+      <p className="mt-3 text-base text-gray-800 leading-relaxed">
+        <span className="font-normal">{listing.description}</span> 
+      </p>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-6 mb-2">
+        <div className="flex items-center text-lg font-bold text-gray-700">
+            <MdCarRental className="text-green-600 mr-3" />
+            <span>{listing.manufacturer}</span>
+        </div>
+        <div className="flex items-center text-lg font-bold text-gray-700">
+            <MdCarRental className="text-green-600 mr-3" />
+            <span>{listing.model}</span>
+        </div>
+        <div className="flex items-center text-lg font-bold text-gray-700">
+            <MdSpeed className="text-green-600 mr-3" />
+            <span>{listing.mileage} miles</span>
+        </div>
+        <div className="flex items-center text-lg font-bold text-gray-700">
+            <MdCalendarToday className="text-green-600 mr-3" />
+            <span>{listing.year}</span>
+        </div>
+        <div className="flex items-center text-lg font-bold text-gray-700">
+            <MdLocalGasStation className="text-green-600 mr-3" />
+            <span>{listing.fuelType}</span>
+        </div>
+        <div className="flex items-center text-lg font-bold text-gray-700">
+            <MdCarRepair className="text-green-600 mr-3" />
+            <span>{listing.transmission}</span>
+        </div>
+       </div>
     </div>
   </div>
 </main>
