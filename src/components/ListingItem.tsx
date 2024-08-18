@@ -23,8 +23,8 @@ interface ListingItemProps {
     timestamp?: any; // Ensure this is a valid Date or timestamp object
   };
   id: string;
-  onEdit: (id: string) => void;
-  onDelete: (id: string) => void;
+  onEdit?: (id: string) => void;
+  onDelete?: (id: string) => void;
 
 }
 

@@ -167,11 +167,8 @@ const Home: React.FC = () => {
                 <ListingItem
                   key={listing.id}
                   listing={listing.data}
-                  id={listing.id} onEdit={function (id: string): void {
-                    throw new Error("Function not implemented.");
-                  } } onDelete={function (id: string): void {
-                    throw new Error("Function not implemented.");
-                  } }                />
+                  id={listing.id}
+                />
               ))}
             </ul>
           </div>
@@ -189,11 +186,8 @@ const Home: React.FC = () => {
                 <ListingItem
                   key={listing.id}
                   listing={listing.data}
-                  id={listing.id} onEdit={function (id: string): void {
-                    throw new Error("Function not implemented.");
-                  } } onDelete={function (id: string): void {
-                    throw new Error("Function not implemented.");
-                  } }                />
+                  id={listing.id}
+                />
               ))}
             </ul>
           </div>
@@ -211,11 +205,8 @@ const Home: React.FC = () => {
                 <ListingItem
                   key={listing.id}
                   listing={listing.data}
-                  id={listing.id} onEdit={function (id: string): void {
-                    throw new Error("Function not implemented.");
-                  } } onDelete={function (id: string): void {
-                    throw new Error("Function not implemented.");
-                  } }                />
+                  id={listing.id}
+                />
               ))}
             </ul>
           </div>
