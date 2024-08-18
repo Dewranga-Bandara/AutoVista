@@ -14,6 +14,12 @@ import {
 import { db } from "../firebase";
 import Spinner from "../components/Spinner";
 import ListingItem from "../components/ListingItem";
+import { useParams } from "react-router-dom";
+
+// Define a type for route parameters that matches Record<string, string | undefined>
+type Params = {
+  categoryName?: string;
+};
 
 interface ListingData {
   type: "rent" | "sale";
@@ -37,10 +43,14 @@ interface Listing {
   data: ListingData;
 }
 
-export default function Offers() {
+export default function Category() {
   const [listings, setListings] = useState<Listing[] | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [lastFetchedListing, setLastFetchListing] = useState<QueryDocumentSnapshot<DocumentData> | null>(null);
+  
+  // Use type casting for useParams
+  const params = useParams() as Params;
+  const categoryName = params.categoryName || '';
 
   useEffect(() => {
     async function fetchListings() {
@@ -48,7 +58,7 @@ export default function Offers() {
         const listingRef = collection(db, "listings");
         const q = query(
           listingRef,
-          where("offer", "==", true),
+          where("type", "==", categoryName),
           orderBy("timestamp", "desc"),
           limit(8)
         );
@@ -70,15 +80,16 @@ export default function Offers() {
     }
 
     fetchListings();
-  }, []);
+  }, [categoryName]);
 
   async function onFetchMoreListings() {
     try {
       if (!lastFetchedListing) return;
+
       const listingRef = collection(db, "listings");
       const q = query(
         listingRef,
-        where("offer", "==", true),
+        where("type", "==", categoryName),
         orderBy("timestamp", "desc"),
         startAfter(lastFetchedListing),
         limit(4)
@@ -96,13 +107,15 @@ export default function Offers() {
       setListings((prevState) => prevState ? [...prevState, ...fetchedListings] : fetchedListings);
       setLoading(false);
     } catch (error) {
-      toast.error("Could not fetch listings");
+      toast.error("Could not fetch more listings");
     }
   }
 
   return (
     <div className="max-w-6xl mx-auto px-3">
-      <h1 className="text-3xl text-center mt-6 font-bold mb-6">Offers</h1>
+      <h1 className="text-3xl text-center mt-6 font-bold mb-6">
+        {categoryName === "rent" ? "Places for rent" : "Places for sale"}
+      </h1>
       {loading ? (
         <Spinner />
       ) : listings && listings.length > 0 ? (
@@ -130,7 +143,12 @@ export default function Offers() {
           )}
         </>
       ) : (
-        <p>There are no current offers</p>
+        <p>
+          There are no current{" "}
+          {params.categoryName === "rent"
+            ? "places for rent"
+            : "places for sale"}
+        </p>
       )}
     </div>
   );
