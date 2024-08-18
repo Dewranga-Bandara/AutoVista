@@ -104,7 +104,7 @@ export default function Listing() {
   return (
     <main className="bg-gray-50 min-h-screen py-7 overflow-y-hidden">
 
-  <div className="m-4 flex flex-col md:flex-row max-w-6xl lg:mx-auto p-6 rounded-lg shadow-xl bg-white lg:space-x-8 overflow-y-hidden">
+  <div className="m-4 flex flex-col md:flex-row max-w-6xl lg:mx-auto p-6 rounded-lg shadow-xl bg-white lg:space-x-8 overflow-y-hidden ">
     <div className="mt-6 w-full h-[200px] lg:h-[400px] bg-gray-200 rounded-lg overflow-y-hidden justify-center items-center">
     {/* Swiper Component for Image Carousel */}
     {listing.images && listing.images.length > 0 ? (
@@ -119,7 +119,7 @@ export default function Listing() {
               {listing.images.map((url, index) => (
                 <SwiperSlide key={index}>
                   <div
-                    className="relative w-full overflow-hidden h-[400px] lg:h-[500px] rounded-lg shadow-lg cursor-pointer"
+                    className="relative w-full overflow-hidden h-[400px] lg:h-[500px] rounded-lg shadow-lg cursor-zoom-in"
                     onClick={() => handleImageClick(url)}
                     style={{
                       background: `url(${url}) center no-repeat`,
