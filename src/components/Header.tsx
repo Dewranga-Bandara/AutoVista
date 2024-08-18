@@ -27,12 +27,12 @@ export default function Header() {
 
   return (
     <div className="bg-white border-b shadow-sm sticky top-0 z-40">
-      <header className="flex justify-between items-center px-3 max-w-6xl mx-auto">
+      <header className="flex justify-between items-center px-0 max-w-6xl mx-auto">
         <div>
           <img
-            src="" // Add your logo URL here
+            src="src\assets\logo.png" // Add your logo URL here
             alt="logo"
-            className="h-5 cursor-pointer"
+            className="h-12 cursor-pointer rounded-lg"
             onClick={() => navigate("/")}
           />
         </div>

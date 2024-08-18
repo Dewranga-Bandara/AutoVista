@@ -54,7 +54,7 @@ export default function Contact({ userRef, listing }: ContactProps) {
       {Owner && (
         <div className="flex flex-col w-full">
           <p>
-            Contact {Owner.name} for the {listing.name.toLowerCase()}
+            Contact Owner for the {listing.name.toLowerCase()}
           </p>
           <div className="mt-3 mb-6">
             <textarea

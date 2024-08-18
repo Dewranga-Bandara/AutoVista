@@ -43,90 +43,91 @@ const ListingItem: React.FC<ListingItemProps> = ({ listing, id, onEdit, onDelete
 
   return (
     <li className="relative bg-white flex flex-col justify-between items-center shadow-md hover:shadow-lg rounded-lg overflow-hidden transition-shadow duration-150 m-4">
-      <Link className="contents" to={`/category/${listing.type}/${id}`}>
-        <img
-          className="h-[200px] w-full object-cover hover:scale-110 transition-transform duration-200 ease-in-out"
-          loading="lazy"
-          src={imageUrl}
-          alt={listing.name}
-        />
-        {timestamp && (
-          <div className="absolute top-2 left-2 bg-green-500 text-white uppercase text-xs font-semibold rounded-md px-2 py-1 shadow-lg">
-            {Moment(timestamp).fromNow()}
+  <Link className="contents" to={`/category/${listing.type}/${id}`}>
+    <img
+      className="h-[200px] w-full object-cover hover:scale-110 transition-transform duration-200 ease-in-out"
+      loading="lazy"
+      src={imageUrl}
+      alt={listing.name}
+    />
+    {timestamp && (
+      <div className="absolute top-2 left-2 bg-green-500 text-white uppercase text-xs font-semibold rounded-md px-2 py-1 shadow-lg">
+        {Moment(timestamp).fromNow()}
+      </div>
+    )}
+    {listing.offer && (
+      <div className="absolute top-2 right-2 bg-red-500 text-white uppercase text-xs font-semibold rounded-md px-2 py-1 shadow-lg">
+        Offer
+      </div>
+    )}
+    <div className="w-full p-4">
+      <div className="flex items-center space-x-2">
+        <MdCarRental className="h-5 w-5 text-green-700" />
+        <p className="font-semibold text-sm text-gray-700 truncate">
+          {listing.manufacturer}
+        </p>
+      </div>
+      <p className="font-semibold text-lg text-gray-800 truncate mt-2">
+        {listing.name}
+      </p>
+      <p className="text-blue-600 mt-2 font-semibold text-lg">
+        $
+        {listing.offer && listing.discountedPrice
+          ? (listing.regularPrice)
+              .toString()
+              .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+          : listing.regularPrice
+              .toString()
+              .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+        {listing.type === "rent" && " / month"}
+      </p>
+
+      <div className="flex items-center mt-3 space-x-6 justify-between">
+        <div className="flex items-center space-x-1">
+          <p className="font-bold text-xs text-gray-600">{listing.year}</p>
+        </div>
+        <div className="flex items-center space-x-1">
+          <p className="font-bold text-xs text-gray-600">
+            {listing.transmission}
+          </p>
+        </div>
+        <div className="flex items-center space-x-1">
+          <p className="font-bold text-xs text-gray-600">
+            {listing.fuelType}
+          </p>
+        </div>
+      </div>
+    </div>
+  </Link>
+  {(onEdit || onDelete) && 
+    <>
+    <div className="w-full border-t border-gray-300 mb-2"></div>
+    <div className="mt-7 p-1 flex flex-col justify-between h-full">
+      <div className="absolute bottom-2 left-4 right-4 flex justify-between items-center">
+        {onEdit && (
+          <div
+            className="flex items-center justify-center w-7 h-7 bg-blue-500 text-white rounded-full cursor-pointer hover:bg-blue-700 transition-colors duration-200"
+            onClick={() => onEdit(id)}
+            aria-label="Edit Listing"
+          >
+            <MdEdit className="h-3 w-3" />
           </div>
         )}
-        {listing.offer && (
-          <div className="absolute top-2 right-2 bg-red-500 text-white uppercase text-xs font-semibold rounded-md px-2 py-1 shadow-lg">
-            Offer
+        {onDelete && (
+          <div
+            className="flex items-center justify-center w-7 h-7 bg-red-500 text-white rounded-full cursor-pointer hover:bg-red-700 transition-colors duration-200"
+            onClick={() => onDelete(id)}
+            aria-label="Delete Listing"
+          >
+            <FaTrash className="h-3 w-3" />
           </div>
         )}
-        <div className="w-full p-4">
-          <div className="flex items-center space-x-2">
-            <MdCarRental className="h-5 w-5 text-green-700" />
-            <p className="font-semibold text-sm text-gray-700 truncate">
-              {listing.manufacturer}
-            </p>
-          </div>
-          <p className="font-semibold text-lg text-gray-800 truncate mt-2">
-            {listing.name}
-          </p>
-          <p className="text-blue-600 mt-2 font-semibold text-lg">
-            $
-            {listing.offer
-              ? listing.discountedPrice
-                  ?.toString()
-                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-              : listing.regularPrice
-                  .toString()
-                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-            {listing.type === "rent"}
-          </p>
-          <div className="flex items-center mt-3 space-x-6 justify-between">
-            <div className="flex items-center space-x-1">
-              <p className="font-bold text-xs text-gray-600">{listing.year}</p>
-            </div>
-            <div className="flex items-center space-x-1">
-              <p className="font-bold text-xs text-gray-600">
-                {listing.transmission}
-              </p>
-            </div>
-            <div className="flex items-center space-x-1">
-              <p className="font-bold text-xs text-gray-600">
-                {listing.fuelType}
-              </p>
-            </div>
-          </div>
-        </div>
-      </Link>
-      {(onEdit || onDelete) && 
-        <>
-        <div className="w-full border-t border-gray-300 mb-2"></div>
-        <div className="mt-7 p-1 flex flex-col justify-between h-full">
-          <div className="absolute bottom-2 left-4 right-4 flex justify-between items-center">
-            {onEdit && (
-              <div
-                className="flex items-center justify-center w-7 h-7 bg-blue-500 text-white rounded-full cursor-pointer hover:bg-blue-700 transition-colors duration-200"
-                onClick={() => onEdit(id)}
-                aria-label="Edit Listing"
-              >
-                <MdEdit className="h-3 w-3" />
-              </div>
-            )}
-            {onDelete && (
-              <div
-                className="flex items-center justify-center w-7 h-7 bg-red-500 text-white rounded-full cursor-pointer hover:bg-red-700 transition-colors duration-200"
-                onClick={() => onDelete(id)}
-                aria-label="Delete Listing"
-              >
-                <FaTrash className="h-3 w-3" />
-              </div>
-            )}
-          </div>
-        </div>
-        </>
-      }
-      
-    </li>
+      </div>
+    </div>
+    </>
+  }
+</li>
+
   );
 };
 

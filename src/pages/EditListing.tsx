@@ -341,6 +341,11 @@ export default function EditListing() {
 
     if (!validateForm()) return;
 
+    if (images.length < 1) {
+      toast.error("Minimum 1 image is required");
+      return;
+    }
+
     if (images.length > 6) {
       toast.error("Maximum 6 images are allowed");
       return;
@@ -444,164 +449,217 @@ export default function EditListing() {
 
   return (
     <main>
-        <h1 className="text-2xl mb-4 text-center font-bold">Create Vehicle Listing</h1>
-        <div style={{ display: 'flex', flexDirection: 'row', padding: '20px' }}>
-        <div style={{ flex: 1, marginRight: '20px', padding: '20px', backgroundColor: '#f9fafb', borderRadius: '12px', boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)' }}>
-        <form onSubmit={handleSubmit}>
-            <label className="block text-xl font-semibold text-gray-800 mb-6 text-center">
-            Choose
-            </label>
-            <div className="flex mb-6 justify-between">
-            <button
-                type="button"
-                id="rent"
-                className={`py-3 px-5 mr-4 rounded-lg transition-transform transform hover:scale-105 ${
-                type === "rent" ? "bg-blue-500 text-white shadow-lg" : "bg-gray-200"
-                }`}
-                onClick={() => setFormData((prev) => ({ ...prev, type: "rent" }))}
-            >
-                Rent
-            </button>
-            <button
-                type="button"
-                id="sale"
-                className={`py-3 px-5 rounded-lg transition-transform transform hover:scale-105 ${
-                type === "sale" ? "bg-blue-500 text-white shadow-lg" : "bg-gray-200"
-                }`}
-                onClick={() => setFormData((prev) => ({ ...prev, type: "sale" }))}
-            >
-                Sale
-            </button>
-            </div>
+    <h1 className="text-3xl text-center mt-6 font-bold mb-6">Edit Listing</h1>
+    <div style={{ display: 'flex', flexDirection: 'row', padding: '20px' }}>
+    <div className=" bg-white rounded-lg shadow-md" style={{ flex: 2, marginRight: '20px', padding: '20px', backgroundColor: '#f9fafb', borderRadius: '12px', boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)' }}>
+      <form onSubmit={handleSubmit} className="max-w-4xl mx-auto p-6">
+      {/* Form Title */}
+      <label className="block text-2xl font-semibold text-gray-800 mb-6 text-center">
+        Choose Listing Type
+      </label>
+      
+      {/* Type Selection Buttons */}
+      <div className="flex mb-6 justify-center space-x-4">
+        <button
+          type="button"
+          id="rent"
+          className={`py-3 px-6 rounded-lg transition-transform transform hover:scale-105 ${
+            type === "rent" ? "bg-blue-500 text-white shadow-lg" : "bg-gray-200 text-gray-800"
+          }`}
+          onClick={() => setFormData((prev) => ({ ...prev, type: "rent" }))}
+        >
+          Rent
+        </button>
+        <button
+          type="button"
+          id="sale"
+          className={`py-3 px-6 rounded-lg transition-transform transform hover:scale-105 ${
+            type === "sale" ? "bg-blue-500 text-white shadow-lg" : "bg-gray-200 text-gray-800"
+          }`}
+          onClick={() => setFormData((prev) => ({ ...prev, type: "sale" }))}
+        >
+          Sale
+        </button>
+      </div>
 
-            <input
+      {/* Manufacturer and Model Inputs */}
+      <div className="flex flex-col lg:flex-row gap-4 mb-6">
+        {/* Vehicle Name Input */}
+      <div className="flex-1">
+        <label htmlFor="name" className="block text-lg font-semibold text-gray-700 mb-2">
+          Vehicle Name
+        </label>
+        <input
+          type="text"
+          id="name"
+          value={name}
+          onChange={onChange}
+          placeholder="eg: BMW X5"
+          className="border border-gray-300 p-3 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 transition-colors duration-300"
+        />
+        {errors.name && <p className="text-red-500 mt-2 text-sm">{errors.name}</p>}
+      </div>
+        <div className="flex-1">
+          <label htmlFor="manufacturer" className="block text-lg font-semibold text-gray-700 mb-2">
+            Manufacturer
+          </label>
+          <input
             type="text"
-            id="name"
-            value={name}
+            id="manufacturer"
+            value={manufacturer}
             onChange={onChange}
-            placeholder="Vehicle Name"
-            className="border p-3 mb-4 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
-            />
-            {errors.name && <p className="text-red-500 mb-4">{errors.name}</p>}
-
-            <div className="flex justify-between gap-4">
-            <input
-                type="text"
-                id="manufacturer"
-                value={manufacturer}
-                onChange={onChange}
-                placeholder="Manufacturer"
-                className="border p-3 mb-4 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
-            />
-            {errors.manufacturer && <p className="text-red-500 mb-4">{errors.manufacturer}</p>}
-
-            <input
-                type="text"
-                id="model"
-                value={model}
-                onChange={onChange}
-                placeholder="Model"
-                className="border p-3 mb-4 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
-            />
-            {errors.model && <p className="text-red-500 mb-4">{errors.model}</p>}
-            </div>
-
-            <div className="flex justify-between gap-4">
-            <input
-                type="number"
-                id="year"
-                value={year}
-                onChange={onChange}
-                placeholder="Year"
-                className="border p-3 mb-4 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
-            />
-            {errors.year && <p className="text-red-500 mb-4">{errors.year}</p>}
-
-            <input
-                type="number"
-                id="mileage"
-                value={mileage}
-                onChange={onChange}
-                placeholder="Mileage"
-                className="border p-3 mb-4 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
-            />
-            {errors.mileage && <p className="text-red-500 mb-4">{errors.mileage}</p>}
-            </div>
-
-            <div className="flex justify-between gap-4">
-            <Select
-                name="fuelType"
-                options={fuelTypeOptions}
-                onChange={handleSelectChange}
-                value={fuelTypeOptions.find((option) => option.value === fuelType)}
-                placeholder="Fuel Type"
-                className="border p-3 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
-            />
-            {errors.fuelType && <p className="text-red-500 mb-4">{errors.fuelType}</p>}
-
-            <Select
-                name="transmission"
-                options={transmissionOptions}
-                onChange={handleSelectChange}
-                value={transmissionOptions.find((option) => option.value === transmission)}
-                placeholder="Transmission"
-                className="border p-3 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
-            />
-            {errors.transmission && <p className="text-red-500 mb-4">{errors.transmission}</p>}
-            </div>
-
-            <textarea
-            id="description"
-            value={description}
-            onChange={onChange}
-            placeholder="Description"
-            className="border p-3 mt-4 mb-4 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
-            />
-            {errors.description && <p className="text-red-500 mb-4">{errors.description}</p>}
-
-            <input
-            type="number"
-            id="regularPrice"
-            value={regularPrice}
-            onChange={onChange}
-            placeholder="Regular Price"
-            className="border p-3 mb-4 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
-            />
-            {errors.regularPrice && <p className="text-red-500 mb-4">{errors.regularPrice}</p>}
-
-            <label className="flex items-center mb-4">
-            <input
-                type="checkbox"
-                id="offer"
-                checked={offer}
-                onChange={onChange}
-                className="mr-2 focus:ring-2 focus:ring-blue-300"
-            />
-            Special Offer
-            </label>
-
-            {offer && (
-            <input
-                type="number"
-                id="discountedPrice"
-                value={discountedPrice}
-                onChange={onChange}
-                placeholder="Discounted Price"
-                className="border p-3 mb-4 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
-            />
-            )}
-            {offer && errors.discountedPrice && (
-            <p className="text-red-500 mb-4">{errors.discountedPrice}</p>
-            )}
-
-            <button
-            type="submit"
-            className="w-full py-3 bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-lg shadow-lg transition-transform transform hover:scale-105"
-            >
-            Update Listing
-            </button>
-        </form>
+            placeholder="eg: BMW"
+            className="border border-gray-300 p-3 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 transition-colors duration-300"
+          />
+          {errors.manufacturer && <p className="text-red-500 mt-2 text-sm">{errors.manufacturer}</p>}
         </div>
+
+        <div className="flex-1">
+          <label htmlFor="model" className="block text-lg font-semibold text-gray-700 mb-2">
+            Model
+          </label>
+          <input
+            type="text"
+            id="model"
+            value={model}
+            onChange={onChange}
+            placeholder="eg: 320i"
+            className="border border-gray-300 p-3 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 transition-colors duration-300"
+          />
+          {errors.model && <p className="text-red-500 mt-2 text-sm">{errors.model}</p>}
+        </div>
+      </div>
+
+      <div className="flex flex-col lg:flex-row gap-4 mb-6">
+      <div className="flex-1">
+          <label htmlFor="year" className="block text-lg font-semibold text-gray-700 mb-2">
+            Year
+          </label>
+          <input
+            type="number"
+            id="year"
+            value={year}
+            onChange={onChange}
+            placeholder="eg: 2022"
+            className="border border-gray-300 p-3 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 transition-colors duration-300"
+          />
+          {errors.year && <p className="text-red-500 mt-2 text-sm">{errors.year}</p>}
+        </div>
+        <div className="flex-1">
+          <label htmlFor="mileage" className="block text-lg font-semibold text-gray-700 mb-2">
+            Mileage
+          </label>
+          <input
+            type="number"
+            id="mileage"
+            value={mileage}
+            onChange={onChange}
+            placeholder="eg: 5000"
+            className="border border-gray-300 p-3 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 transition-colors duration-300"
+          />
+          {errors.mileage && <p className="text-red-500 mt-2 text-sm">{errors.mileage}</p>}
+        </div>
+      </div>
+
+      <div className="flex flex-col lg:flex-row gap-4 mb-6">
+      <div className="flex-1">
+          <label htmlFor="fuelType" className="block text-lg font-semibold text-gray-700 mb-2">
+            Fuel Type
+          </label>
+          <Select
+            name="fuelType"
+            options={fuelTypeOptions}
+            onChange={handleSelectChange}
+            value={fuelTypeOptions.find((option) => option.value === fuelType)}
+            placeholder="eg: Petrol"
+            className="border border-gray-300 p-3 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 transition-colors duration-300"
+          />
+          {errors.fuelType && <p className="text-red-500 mt-2 text-sm">{errors.fuelType}</p>}
+      </div>
+
+      <div className="flex-1">
+          <label htmlFor="transmission" className="block text-lg font-semibold text-gray-700 mb-2">
+            Transmission
+          </label>
+          <Select
+            name="transmission"
+            options={transmissionOptions}
+            onChange={handleSelectChange}
+            value={transmissionOptions.find((option) => option.value === transmission)}
+            placeholder="eg: Automatic"
+            className="border border-gray-300 p-3 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 transition-colors duration-300"
+          />
+          {errors.transmission && <p className="text-red-500 mt-2 text-sm">{errors.transmission}</p>}
+      </div>
+      </div>
+
+      <label htmlFor="description" className="block text-lg font-semibold text-gray-700 mb-2">
+            Description
+        </label>
+
+        <textarea
+          id="description"
+          value={description}
+          onChange={onChange}
+          placeholder="eg: The 2022 BMW X5 is a luxury SUV that combines performance with elegance. It features a powerful diesel engine, a sophisticated interior, and a host of advanced tech features."
+          className="border border-gray-300 p-3 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 transition-colors duration-300"
+        />
+        {errors.description && <p className="text-red-500 mt-2 text-sm">{errors.description}</p>}
+
+        <label className="flex items-center mt-2 mb-4">
+          <input
+            type="checkbox"
+            id="offer"
+            checked={offer}
+            onChange={onChange}
+            className="mr-2 focus:ring-2 focus:ring-blue-300"
+          />
+          Special Offer
+        </label>
+
+        <div className="flex flex-col lg:flex-row gap-4 mb-6">
+          <div className="flex-1">
+            <label htmlFor="regularPrice" className="block text-lg font-semibold text-gray-700 mb-2">
+              Regular Price
+            </label>
+            <input
+              type="number"
+              id="regularPrice"
+              value={regularPrice}
+              onChange={onChange}
+              placeholder="eg: 50000"
+              className="border border-gray-300 p-3 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 transition-colors duration-300"
+            />
+            {errors.regularPrice && <p className="text-red-500 mt-2 text-sm">{errors.regularPrice}</p>}
+          </div>
+
+        {offer && (
+          <div className="flex-1">
+            <label htmlFor="regularPrice" className="block text-lg font-semibold text-gray-700 mb-2">
+              Discounted Price
+            </label>
+            <input
+              type="number"
+              id="discountedPrice"
+              value={discountedPrice}
+              onChange={onChange}
+              placeholder="eg: 2000"
+              className="border border-gray-300 p-3 w-full rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 transition-colors duration-300"
+            />
+            {offer && errors.discountedPrice && (
+              <p className="text-red-500 mt-2 text-sm">{errors.discountedPrice}</p>
+            )}
+          </div>
+        )}
+        </div>
+        {/* <button
+          type="submit"
+          className="w-full py-3 bg-gradient-to-r from-blue-500 to-blue-700 text-white rounded-lg shadow-lg transition-transform transform hover:scale-105"
+        >
+          Create Listing
+        </button> */}
+      </form>
+      </div>
 
 
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '20px', backgroundColor: '#f7fafc', borderRadius: '12px', boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)' }}>

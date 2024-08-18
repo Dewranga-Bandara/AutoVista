@@ -198,89 +198,102 @@ export default function Profile() {
     navigate(`/edit-listing/${listingID}`);
   };
 
+  const onCreateListing = () => {
+    navigate(`/create-listing`);
+  };
+
   return (
     <>
-      <section className="max-w-6xl mx-auto flex justify-center items-center flex-col">
-        <h1 className="text-3xl text-center mt-6 font-bold">My Profile</h1>
-        <div className="w-full md:w-[50%] mt-6 px-3">
-          <form>
-            {/* Name Input */}
-            <div className="mb-6">
-              <input
-                type="text"
-                id="name"
-                value={formData.name}
-                onChange={onChange}
-                disabled={!isEditing}
-                className={`w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition ease-in-out ${
-                  isEditing ? "bg-red-200 focus:bg-red-200" : ""
-                }`}
-              />
-              {errors.name && <p className="text-red-600 text-sm mt-1">{errors.name}</p>}
-            </div>
+    <section className="mt-4 max-w-6xl mx-auto flex justify-center items-center flex-col bg-gradient-to-r from-blue-100 to-teal-100 p-6 rounded-lg shadow-lg">
+  <h1 className="text-4xl text-center font-bold text-gray-800 mb-6">My Profile</h1>
+  <div className="w-full md:w-[50%] mt-6 px-4 py-6 bg-white rounded-lg shadow-md">
+    <form>
+      {/* Name Input */}
+      <div className="mb-6">
+        <label htmlFor="name" className="block text-lg font-semibold text-gray-700 mb-2">Name</label>
+        <input
+          type="text"
+          id="name"
+          value={formData.name}
+          onChange={onChange}
+          disabled={!isEditing}
+          className={`w-full px-4 py-3 text-lg text-gray-900 bg-gray-100 border border-gray-300 rounded-lg transition ease-in-out focus:ring-2 ${
+            isEditing ? "bg-red-50 ring-red-300" : "focus:ring-blue-300"
+          }`}
+        />
+        {errors.name && <p className="text-red-600 text-sm mt-1">{errors.name}</p>}
+      </div>
 
-            {/* Email Input */}
-            <div className="mb-6">
-              <input
-                type="email"
-                id="email"
-                value={formData.email}
-                onChange={onChange}
-                disabled={!isEditing}
-                className="w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded transition ease-in-out"
-              />
-              {errors.email && <p className="text-red-600 text-sm mt-1">{errors.email}</p>}
-            </div>
+      {/* Email Input */}
+      <div className="mb-6">
+        <label htmlFor="email" className="block text-lg font-semibold text-gray-700 mb-2">Email</label>
+        <input
+          type="email"
+          id="email"
+          value={formData.email}
+          onChange={onChange}
+          disabled={!isEditing}
+          className="w-full px-4 py-3 text-lg text-gray-900 bg-gray-100 border border-gray-300 rounded-lg transition ease-in-out focus:ring-2 focus:ring-blue-300"
+        />
+        {errors.email && <p className="text-red-600 text-sm mt-1">{errors.email}</p>}
+      </div>
 
-            <div className="flex justify-between whitespace-nowrap text-sm sm:text-lg mb-6">
-              <p className="flex items-center ">
-                {isEditing ? (
-                  <>
-                    <span
-                      onClick={async () => {
-                        await onSubmit();
-                        toggleEdit();
-                      }}
-                      className="text-blue-600 hover:text-blue-700 transition ease-in-out duration-200 ml-1 cursor-pointer"
-                    >
-                      Save
-                    </span>
-                    <span
-                      onClick={toggleEdit}
-                      className="text-red-600 hover:text-red-700 transition ease-in-out duration-200 ml-1 cursor-pointer"
-                    >
-                      Cancel
-                    </span>
-                  </>
-                ) : (
-                  <>
-                    Do you want to change your name?
-                    <span
-                      onClick={toggleEdit}
-                      className="text-red-600 hover:text-red-700 transition ease-in-out duration-200 ml-1 cursor-pointer"
-                    >
-                      Edit
-                    </span>
-                  </>
-                )}
-              </p>
-              <p
-                onClick={onLogout}
-                className="text-blue-600 hover:text-blue-800 transition duration-200 ease-in-out cursor-pointer"
+      <div className="flex justify-between items-center text-sm sm:text-base mb-6">
+        <p className="flex items-center space-x-3">
+          {isEditing ? (
+            <>
+              <span
+                onClick={async () => {
+                  await onSubmit();
+                  toggleEdit();
+                }}
+                className="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-700 transition ease-in-out cursor-pointer"
               >
-                Sign out
-              </p>
-            </div>
-          </form>
-        </div>
-      </section>
+                Save
+              </span>
+              <span
+                onClick={toggleEdit}
+                className="bg-red-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-red-700 transition ease-in-out cursor-pointer"
+              >
+                Cancel
+              </span>
+            </>
+          ) : (
+            <>
+              <span>Do you want to change your name?</span>
+              <span
+                onClick={toggleEdit}
+                className="text-purple-600 hover:text-purple-700 transition ease-in-out duration-200 ml-1 cursor-pointer"
+              >
+                Edit
+              </span>
+            </>
+          )}
+        </p>
+        <p
+          onClick={onLogout}
+          className="text-red-600 hover:text-red-800 transition ease-in-out duration-200 cursor-pointer"
+        >
+          Sign out
+        </p>
+      </div>
+      <button
+            onClick={() => onCreateListing()}
+            className="justify-center items-center cursor-pointer bg-gradient-to-r from-blue-500 to-blue-700 text-white w-full py-2 font-semibold rounded-lg shadow-lg transition-transform transform hover:scale-105 hover:bg-gradient-to-r hover:from-blue-600 hover:to-blue-800"
+            >
+            Create new listing
+        </button>
+    </form>
+  </div>
+</section>
+
       <div className="max-w-6xl px-3 mt-6 mx-auto">
       {!loading && listings.length > 0 && (
         <>
            <h2 className="text-2xl text-center font-semibold mb-6">
               My Listings
             </h2>
-            <ul className="sm:grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+            <ul className="sm:grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {listings.map((listing) => (
               <ListingItem
                 key={listing.id}
