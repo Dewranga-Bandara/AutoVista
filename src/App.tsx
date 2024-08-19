@@ -14,6 +14,8 @@ import EditListing from "./pages/EditListing";
 import Listing from "./pages/Listing";
 import Category from "./pages/Category";
 import Footer from "./components/Footer";
+import SearchPage from "./pages/Search";
+import AboutUs from "./pages/AboutUs";
 
 export default function App() {
   return (
@@ -27,12 +29,14 @@ export default function App() {
           </Route>
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/sign-up" element={<SignUp />} />
+          <Route path='/search' element={<SearchPage />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route
             path="/category/:categoryName/:listingId"
             element={<Listing />}
           />
           <Route path="/offers" element={<Offers />} />
+          <Route path="/aboutUs" element={<AboutUs />} />
           <Route path="/category/:categoryName" element={<Category />} />
           <Route path="create-listing" element={<PrivateRoute />}>
             <Route path="/create-listing" element={<CreateVehicleListing />} />

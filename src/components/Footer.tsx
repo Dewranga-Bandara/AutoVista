@@ -3,7 +3,7 @@ import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn } from 'react-icons/f
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-gray-800 text-white py-8">
+    <footer className="bg-gray-800 text-white py-8 mt-8">
       <div className="max-w-6xl mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Company Info */}
@@ -22,9 +22,9 @@ const Footer: React.FC = () => {
             <h2 className="text-xl font-semibold mb-4">Quick Links</h2>
             <ul>
               <li><a href="/" className="hover:text-gray-400">Home</a></li>
-              <li><a href="/about" className="hover:text-gray-400">About Us</a></li>
-              <li><a href="/services" className="hover:text-gray-400">Services</a></li>
-              <li><a href="/contact" className="hover:text-gray-400">Contact</a></li>
+              <li><a href="/aboutUs" className="hover:text-gray-400">About Us</a></li>
+              <li><a href="/offers" className="hover:text-gray-400">Offer</a></li>
+              <li><a href="/profile" className="hover:text-gray-400">Profile</a></li>
             </ul>
           </div>
 

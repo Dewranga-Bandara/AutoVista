@@ -204,13 +204,13 @@ export default function Profile() {
 
   return (
     <>
-    <section className="mt-4 max-w-6xl mx-auto flex justify-center items-center flex-col bg-gradient-to-r from-blue-100 to-teal-100 p-6 rounded-lg shadow-lg">
-  <h1 className="text-4xl text-center font-bold text-gray-800 mb-6">My Profile</h1>
+    <section className="mt-4 max-w-6xl mx-auto flex justify-center items-center flex-col p-6">
+  <h1 className="text-3xl text-center mt-0 font-bold mb-3">My Profile</h1>
   <div className="w-full md:w-[50%] mt-6 px-4 py-6 bg-white rounded-lg shadow-md">
     <form>
       {/* Name Input */}
       <div className="mb-6">
-        <label htmlFor="name" className="block text-lg font-semibold text-gray-700 mb-2">Name</label>
+        <label htmlFor="name" className="block text-lg font-semibold text-gray-700 mb-2">Username</label>
         <input
           type="text"
           id="name"
@@ -290,7 +290,7 @@ export default function Profile() {
       <div className="max-w-6xl px-3 mt-6 mx-auto">
       {!loading && listings.length > 0 && (
         <>
-           <h2 className="text-2xl text-center font-semibold mb-6">
+           <h2 className="text-3xl text-center mt-0 font-bold mb-3">
               My Listings
             </h2>
             <ul className="sm:grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">

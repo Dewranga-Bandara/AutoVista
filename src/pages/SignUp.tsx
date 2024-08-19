@@ -122,7 +122,7 @@ export default function SignUp() {
   return (
     <section>
       <h1 className="text-3xl text-center mt-6 font-bold">Sign Up</h1>
-      <div className="flex justify-center flex-wrap items-center px-6 py-12 max-w-6xl mx-auto">
+      <div className="flex justify-center flex-wrap items-center px-6 py-6 max-w-6xl mx-auto">
         <div className="md:w-[67%] lg:w-[50%] mb-12 md:mb-6">
           <img
             src="https://images.unsplash.com/flagged/photo-1564767609342-620cb19b2357?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1373&q=80"
@@ -132,43 +132,48 @@ export default function SignUp() {
         </div>
         <div className="w-full md:w-[67%] lg:w-[40%] lg:ml-20">
           <form onSubmit={onSubmit}>
+          <label className="block text-gray-800 mb-1 font-semibold">Username</label>
             <input
               type="text"
               id="name"
               value={name}
               onChange={onChange}
-              placeholder="Full name"
-              className="mb-6 w-full px-4 py-2 text-xl text-gray-700 bg-white border-gray-300 rounded transition ease-in-out"
+              placeholder="eg: user"
+              className="mb-3 w-full px-4 py-2 text-xl text-gray-700 bg-white border-gray-300 rounded transition ease-in-out"
             />
+            <label className="block text-gray-800 mb-1 font-semibold">Email</label>
             <input
               type="email"
               id="email"
               value={email}
               onChange={onChange}
-              placeholder="Email address"
-              className="mb-6 w-full px-4 py-2 text-xl text-gray-700 bg-white border-gray-300 rounded transition ease-in-out"
+              placeholder="eg: user@gmail.com"
+              className="mb-3 w-full px-4 py-2 text-xl text-gray-700 bg-white border-gray-300 rounded transition ease-in-out"
             />
             <div className="relative mb-6">
-              <input
-                type={showPassword ? "text" : "password"}
-                id="password"
-                value={password}
-                onChange={onChange}
-                placeholder="Password"
-                className="w-full px-4 py-2 text-xl text-gray-700 bg-white border-gray-300 rounded transition ease-in-out"
-              />
-              {showPassword ? (
-                <AiFillEyeInvisible
-                  className="absolute right-3 top-3 text-xl cursor-pointer"
-                  onClick={() => setShowPassword((prevState) => !prevState)}
-                />
-              ) : (
-                <AiFillEye
-                  className="absolute right-3 top-3 text-xl cursor-pointer"
-                  onClick={() => setShowPassword((prevState) => !prevState)}
-                />
-              )}
-            </div>
+      <label className="block text-gray-800 mb-1 font-semibold">Password</label>
+      <div className="relative">
+        <input
+          type={showPassword ? "text" : "password"}
+          id="password"
+          value={password}
+          onChange={onChange}
+          placeholder="eg: .............."
+          className="w-full px-4 py-2 text-xl text-gray-700 bg-white border-gray-300 rounded transition ease-in-out pr-12"
+        />
+        {showPassword ? (
+          <AiFillEyeInvisible
+            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-xl cursor-pointer"
+            onClick={() => setShowPassword((prevState) => !prevState)}
+          />
+        ) : (
+          <AiFillEye
+            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-xl cursor-pointer"
+            onClick={() => setShowPassword((prevState) => !prevState)}
+          />
+        )}
+      </div>
+    </div>
             <div className="flex justify-between whitespace-nowrap text-sm sm:text-lg">
               <p className="mb-6">
                 Have an account?

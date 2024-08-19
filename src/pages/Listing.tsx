@@ -102,7 +102,7 @@ export default function Listing() {
   }
 
   return (
-    <main className="bg-gray-50 min-h-screen py-7 overflow-y-hidden">
+    <main className="min-h-screen py-7 overflow-y-hidden">
 
   <div className="m-4 flex flex-col md:flex-row max-w-6xl lg:mx-auto p-6 rounded-lg shadow-xl bg-white lg:space-x-8 overflow-y-hidden ">
     <div className="mt-6 w-full h-[200px] lg:h-[400px] bg-gray-200 rounded-lg overflow-y-hidden justify-center items-center">
