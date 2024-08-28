@@ -5,7 +5,7 @@ import ListingItem from '../components/ListingItem';
 
 const SearchPage: React.FC = () => {
   const [searchParams, setSearchParams] = useState({
-    type: '',
+    type: 'rent',
     name: '',
     manufacturer: '',
     model: '',
@@ -110,14 +110,13 @@ const SearchPage: React.FC = () => {
   }, [searchParams]);
 
   return (
-<div className="p-6 min-h-screen">
-  <h1 className="text-3xl text-center mt-0 font-bold mb-3">Search Listings</h1>
 
-  <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
+<div className="flex flex-col md:flex-row min-h-screen">
+ 
     {/* Filter Options */}
-    <div className="flex-1 bg-white p-6 rounded-lg shadow-lg max-w-3xl mx-auto h-fit">
-      <h2 className="text-2xl font-semibold mb-6">Filter Options</h2>
-      <div className="grid grid-cols-1 gap-6">
+    <aside className="flex-1 bg-white shadow-md p-8 border-r md:w-1/4 h-fit rounded-lg max-w-fit">
+      <h2 className="text-2xl font-semibold mb-4">Filter Options</h2>
+      <div className="flex flex-col gap-4">
         {/* Type Filter */}
         <div>
           <label className="block text-gray-800 mb-2 font-semibold">Type</label>
@@ -201,10 +200,11 @@ const SearchPage: React.FC = () => {
       >
         Search
       </button>
-    </div>
+    </aside>
 
     {/* Listings Display */}
-    <div className="flex-2 p-4 max-w-6xl mx-auto h-fit">
+    <div className="flex-4 p-4">
+    <h1 className="text-3xl text-center mt-0 font-bold mb-3">Search Listings</h1>
       {loading ? (
         <p className="text-center text-gray-600">Loading...</p>
       ) : error ? (
@@ -224,8 +224,6 @@ const SearchPage: React.FC = () => {
       )}
     </div>
   </div>
-</div>
-
   );
 };
 

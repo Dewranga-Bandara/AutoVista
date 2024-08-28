@@ -449,7 +449,7 @@ export default function EditListing() {
 
   return (
     <main>
-    <h1 className="text-3xl text-center mt-6 font-bold mb-6">Edit Listing</h1>
+    <h1 className="text-3xl text-center mt-6 font-bold mb-6">Update a Listing</h1>
     <div style={{ display: 'flex', flexDirection: 'row', padding: '20px' }}>
     <div className=" bg-white rounded-lg shadow-md" style={{ flex: 2, marginRight: '20px', padding: '20px', backgroundColor: '#f9fafb', borderRadius: '12px', boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)' }}>
       <form onSubmit={handleSubmit} className="max-w-4xl mx-auto p-6">

@@ -86,7 +86,7 @@ export default function Slider() {
                   : "none", // Fallback if images is empty
                 backgroundSize: "cover",
               }}
-              className="relative w-full h-[340px] overflow-hidden"
+              className="relative w-full h-[520px] overflow-hidden"
             >
               {/* Optionally show a placeholder or text if no image */}
               {data.images.length === 0 && (

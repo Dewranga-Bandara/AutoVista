@@ -14,7 +14,7 @@ const Footer: React.FC = () => {
             </p>
             <p>1234 Car Lane, Auto City, AC 56789</p>
             <p>Email: contact@autovista.com</p>
-            <p>Phone: (123) 456-7890</p>
+            <p>Phone: 0112345678</p>
           </div>
 
           {/* Quick Links */}

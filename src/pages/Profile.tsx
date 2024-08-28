@@ -263,19 +263,21 @@ export default function Profile() {
               <span>Do you want to change your name?</span>
               <span
                 onClick={toggleEdit}
-                className="text-purple-600 hover:text-purple-700 transition ease-in-out duration-200 ml-1 cursor-pointer"
+                className="bg-purple-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-purple-700 transition ease-in-out cursor-pointer"
               >
                 Edit
               </span>
             </>
           )}
         </p>
-        <p
+        <button
           onClick={onLogout}
-          className="text-red-600 hover:text-red-800 transition ease-in-out duration-200 cursor-pointer"
+          className="ml-2 bg-red-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-red-700 transition ease-in-out cursor-pointer"
+          aria-label="Sign out"
         >
           Sign out
-        </p>
+        </button>
+
       </div>
       <button
             onClick={() => onCreateListing()}

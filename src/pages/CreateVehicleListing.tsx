@@ -257,7 +257,7 @@ export default function CreateVehicleListing() {
         (snapshot) => {
           const progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          console.log("Upload is " + progress + "% done");
+          // console.log("Upload is " + progress + "% done");
         },
         (error) => {
           reject(error);
@@ -313,7 +313,7 @@ export default function CreateVehicleListing() {
         formDataCopy.discountedPrice = Number(formData.discountedPrice);
       }
 
-      console.log(formDataCopy)
+      // console.log(formDataCopy)
 
       setLoading(false);
 
@@ -348,8 +348,8 @@ export default function CreateVehicleListing() {
 
   return (
     <main>
-    <h1 className="text-3xl text-center mt-6 font-bold mb-6">Create New Listing</h1>
-    <div style={{ display: 'flex', flexDirection: 'row', padding: '20px' }}>
+    <h1 className="text-3xl text-center mt-6 font-bold mb-6">Create a New Listing</h1>
+    <div className="flex-col sm:flex-row" style={{ display: 'flex', padding: '20px' }}>
       <div className=" bg-white rounded-lg shadow-md" style={{ flex: 2, marginRight: '20px', padding: '20px', backgroundColor: '#f9fafb', borderRadius: '12px', boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)' }}>
       <form onSubmit={handleSubmit} className="max-w-4xl mx-auto p-6">
       {/* Form Title */}
@@ -561,8 +561,8 @@ export default function CreateVehicleListing() {
       </div>
 
 
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '20px', backgroundColor: '#f7fafc', borderRadius: '12px', boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)' }}>
-      <div style={{ marginBottom: '20px', display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div className="mt-8 sm:mt-0" style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '20px', backgroundColor: '#f7fafc', borderRadius: '12px', boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)' }}>
+      <div style={{ marginBottom: '20px', display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap:8 }}>
         <div>
           <label htmlFor="images">
             <input

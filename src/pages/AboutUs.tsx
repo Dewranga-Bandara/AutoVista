@@ -27,27 +27,6 @@ const AboutUs = () => {
           We are driven by our core values of integrity, transparency, and excellence. Our goal is to be the go-to platform for anyone looking to find and drive their dream vehicle with confidence and ease.
         </p>
       </section>
-
-      {/* <section className="text-center">
-        <h2 className="text-3xl font-semibold text-gray-800 mb-4">Meet the Team</h2>
-        <div className="flex flex-wrap justify-center gap-6">
-          <div className="bg-white shadow-lg rounded-lg p-6 max-w-xs">
-            <img src="src/assets/team-member1.jpg" alt="Team Member 1" className="h-32 w-32 rounded-full mx-auto mb-4"/>
-            <h3 className="text-xl font-semibold text-gray-800">John Doe</h3>
-            <p className="text-gray-600">Founder & CEO</p>
-          </div>
-          <div className="bg-white shadow-lg rounded-lg p-6 max-w-xs">
-            <img src="src/assets/team-member2.jpg" alt="Team Member 2" className="h-32 w-32 rounded-full mx-auto mb-4"/>
-            <h3 className="text-xl font-semibold text-gray-800">Jane Smith</h3>
-            <p className="text-gray-600">Head of Marketing</p>
-          </div>
-          <div className="bg-white shadow-lg rounded-lg p-6 max-w-xs">
-            <img src="src/assets/team-member3.jpg" alt="Team Member 3" className="h-32 w-32 rounded-full mx-auto mb-4"/>
-            <h3 className="text-xl font-semibold text-gray-800">Alice Johnson</h3>
-            <p className="text-gray-600">Customer Support Lead</p>
-          </div>
-        </div>
-      </section> */}
     </div>
   );
 };

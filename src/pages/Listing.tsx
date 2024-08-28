@@ -198,11 +198,11 @@ export default function Listing() {
 
 
 <div className="flex justify-between items-center space-x-4 w-full mt-7">
-        <p className="cursor-pointer bg-gradient-to-r from-green-500 to-green-700 text-white px-16 py-2 font-semibold rounded-lg shadow-lg transition-transform transform hover:scale-105 hover:bg-gradient-to-r hover:from-green-600 hover:to-green-800">
+        <p className="bg-gradient-to-r from-green-500 to-green-700 text-white px-16 py-2 font-semibold rounded-lg shadow-lg ">
           {listing.type === "rent" ? "Rent" : "Sale"}
         </p>
 
-        {listing.userRef === auth.currentUser?.uid && !contactOwner && (
+        {listing.userRef !== auth.currentUser?.uid && !contactOwner && (
         <div>
             <button
             onClick={() => setContactOwner(true)}
