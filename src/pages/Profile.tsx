@@ -205,7 +205,7 @@ export default function Profile() {
   return (
     <>
     <section className="mt-4 max-w-6xl mx-auto flex justify-center items-center flex-col p-6">
-  <h1 className="text-3xl text-center mt-0 font-bold mb-3">My Profile</h1>
+  <h1 className="text-3xl text-center mt-0 font-bold mb-3">Profile</h1>
   <div className="w-full md:w-[50%] mt-6 px-4 py-6 bg-white rounded-lg shadow-md">
     <form>
       {/* Name Input */}
@@ -293,7 +293,7 @@ export default function Profile() {
       {!loading && listings.length > 0 && (
         <>
            <h2 className="text-3xl text-center mt-0 font-bold mb-3">
-              My Listings
+              Your Listings
             </h2>
             <ul className="sm:grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {listings.map((listing) => (
