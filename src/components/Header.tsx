@@ -3,6 +3,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { getAuth, onAuthStateChanged, User } from "firebase/auth";
 import { FaSearch } from "react-icons/fa";
 
+import logo from '../assets/svg/logo.svg';
+
 export default function Header() {
   const [pageState, setPageState] = useState<string>("Sign in");
 
@@ -50,7 +52,7 @@ export default function Header() {
 
   <div className='hidden sm:block'>
       <img
-        src="src/assets/svg/logo.svg" // Update path as needed
+        src={logo} // Update path as needed
         alt="logo"
         className={`h-12 cursor-pointer rounded-lg transition-transform transform hover:scale-105`}
         onClick={() => navigate("/")}
