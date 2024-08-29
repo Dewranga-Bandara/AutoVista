@@ -1,4 +1,4 @@
-import { doc, getDoc, DocumentData } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import { useState, useEffect, ChangeEvent } from "react";
 import { toast } from "react-toastify";
 import { db } from "../firebase";
