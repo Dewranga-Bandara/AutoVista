@@ -117,10 +117,10 @@ export default function CreateVehicleListing() {
       }));
     }
   
-    validateField(id, type, value);
+    validateField(id, value);
   }
   
-  function validateField(id: string, type: string, value: string) {
+  function validateField(id: string,  value: string) {
     switch (id) {
       case "fuelType":
         setErrors((prev) => ({
@@ -215,7 +215,7 @@ export default function CreateVehicleListing() {
         [name]: value,
       }));
 
-      validateField(name, "text", value);
+      validateField(name, value);
     }
   }
 
@@ -257,7 +257,7 @@ export default function CreateVehicleListing() {
         (snapshot) => {
           const progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          // console.log("Upload is " + progress + "% done");
+          console.log("Upload is " + progress + "% done");
         },
         (error) => {
           reject(error);

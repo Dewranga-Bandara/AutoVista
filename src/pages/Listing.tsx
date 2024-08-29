@@ -1,5 +1,5 @@
 import { doc, getDoc } from "firebase/firestore";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Spinner from "../components/Spinner";
 import { db } from "../firebase";
@@ -13,7 +13,7 @@ import 'swiper/css/pagination';
 import { getAuth } from "firebase/auth";
 import Contact from "../components/Contact";
 
-import { MdCalendarToday, MdCarCrash, MdCarRental, MdCarRepair, MdCopyAll, MdInsertLink, MdLink, MdLinkOff, MdLocalGasStation, MdSafetyCheck, MdShare, MdSpeed } from "react-icons/md";
+import { MdCalendarToday, MdCarRental, MdCarRepair, MdLocalGasStation, MdShare, MdSpeed } from "react-icons/md";
 
 SwiperCore.use([EffectFade, Autoplay, Navigation, Pagination]);
 

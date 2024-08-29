@@ -10,7 +10,7 @@ import {
 } from "firebase/storage";
 import { getAuth } from "firebase/auth";
 import { v4 as uuid4 } from "uuid";
-import { addDoc, collection, doc, getDoc, serverTimestamp, updateDoc } from "firebase/firestore";
+import { doc, getDoc, serverTimestamp, updateDoc } from "firebase/firestore";
 import { db } from "../firebase"; // Ensure firebase is initialized here
 import { useNavigate, useParams  } from "react-router-dom";
 
@@ -180,11 +180,11 @@ export default function EditListing() {
       }));
     }
   
-    validateField(id, type, value);
+    validateField(id, value);
   }
   
 
-  function validateField(id: string, type: string, value: string) {
+  function validateField(id: string, value: string) {
     switch (id) {
       case "fuelType":
         setErrors((prev) => ({
@@ -279,7 +279,7 @@ export default function EditListing() {
         [name]: value,
       }));
 
-      validateField(name, "text", value);
+      validateField(name, value);
     }
   }
 
