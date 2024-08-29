@@ -114,7 +114,7 @@ export default function Category() {
   return (
     <div className="max-w-6xl mx-auto px-3">
       <h1 className="text-3xl text-center mt-6 font-bold mb-6">
-        {categoryName === "rent" ? "Places for rent" : "Places for sale"}
+        {categoryName === "rent" ? "Vehicles for rent" : "Vehicles for sale"}
       </h1>
       {loading ? (
         <Spinner />
@@ -146,8 +146,8 @@ export default function Category() {
         <p>
           There are no current{" "}
           {params.categoryName === "rent"
-            ? "places for rent"
-            : "places for sale"}
+            ? "vehicles for rent"
+            : "vehicles for sale"}
         </p>
       )}
     </div>
