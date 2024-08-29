@@ -17,6 +17,8 @@ import Footer from "./components/Footer";
 import SearchPage from "./pages/Search";
 import AboutUs from "./pages/AboutUs";
 
+import { Analytics } from "@vercel/analytics/react"
+
 export default function App() {
   return (
     <>
@@ -59,6 +61,7 @@ export default function App() {
         pauseOnHover
         theme="dark"
       />
+      <Analytics />
     </>
   );
 }
