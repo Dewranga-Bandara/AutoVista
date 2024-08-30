@@ -65,47 +65,77 @@ export default function Slider() {
   }
 
   return (
-    <>
-      <Swiper
-        slidesPerView={1}
-        pagination={{ clickable: true }}
-        effect="fade"
-        modules={[EffectFade]}
-        autoplay={{ delay: 3000 }}
-        className="relative w-full h-full overflow-hidden"
-      >
-        {listings.map(({ data, id }) => (
-          <SwiperSlide
-            key={id}
-            onClick={() => navigate(`/category/${data.type}/${id}`)}
-          >
-            <div
-              style={{
-                background: data.images.length > 0 
-                  ? `url(${data.images[0]}) center no-repeat`
-                  : "none", // Fallback if images is empty
-                backgroundSize: "cover",
-              }}
-              className="relative w-full h-[520px] overflow-hidden"
-            >
-              {/* Optionally show a placeholder or text if no image */}
-              {data.images.length === 0 && (
-                <p className="absolute inset-0 flex items-center justify-center text-white bg-gray-800 bg-opacity-60">
-                  No Image Available
-                </p>
-              )}
-            </div>
-            <p className="text-[#f1faee] absolute left-1 top-3 font-medium max-w-[90%] bg-[#1aa43d] shadow-lg opacity-90 p-2 rounded-br-2xl">
-              {data.name}
-            </p>
-            <p className="text-[#f1faee] absolute left-1 bottom-1 font-semibold max-w-[90%] bg-[#e63946] shadow-lg opacity-90 p-2 rounded-tr-2xl">
-              ${data.regularPrice}
-              {data.type === "rent" && " / month"}
-            </p>
+      <div className="relative flex flex-col md:flex-row lg:mx-auto p-8 rounded-lg shadow-lg bg-gradient-to-r lg:space-x-8 overflow-hidden">
+        <div className="flex flex-col justify-center items-center p-6 gap-8 sm:w-2/6">
+          <h1 style={{ fontFamily: 'Fugaz One, sans-serif' }}  className='text-black font-bold text-4xl lg:text-6xl backdrop-blur-none'>
+              Find Your  <span className='text-green-600 text-4xl lg:text-6xl font-bold' style={{textShadow: '1px 1px 0 #ffffff, -1px -1px 0 #ffffff, 1px -1px 0 #ffffff, -1px 1px 0 #ffffff'}}>
+              Perfect
+            </span> Ride
+            <br/>
+          </h1>
+          <h1
+  style={{ fontFamily: 'Fugaz One, sans-serif' }}
+  className='text-black font-bold text-3xl lg:text-4xl backdrop-blur-none'
+>
+  <h1
+  style={{ fontFamily: 'Fugaz One, sans-serif' }}
+  className='text-black font-bold text-3xl lg:text-4xl backdrop-blur-none'
+>
+🚗&nbsp;&nbsp;&nbsp;&nbsp;🔍&nbsp;&nbsp;&nbsp;&nbsp;🚙💨
+</h1>
 
-          </SwiperSlide>
-        ))}
-      </Swiper>
-    </>
+</h1>
+
+<p className="text-black text-sm font-medium sm:text-base leading-tight relative z-20">
+  Welcome to Autovista! Discover your new vehicle with us, whether buying or renting, we have a great selection for you. Explore and find what suits you best!
+</p>
+
+          <a 
+              href='/search' 
+              className='bg-blue-600 text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-blue-700 transition duration-300'>
+              Start Your Journey
+          </a>
+      </div>
+      <div className="bg-gray-200 rounded-lg shadow-lg overflow-hidden sm:w-4/6">
+          <Swiper
+            slidesPerView={1}
+            pagination={{ clickable: true }}
+            effect="fade"
+            modules={[EffectFade, Autoplay, Pagination]}
+            autoplay={{ delay: 5000 }}
+            className="relative w-full h-fit"
+          >
+            {listings.map(({ data, id }) => (
+              <SwiperSlide
+                key={id}
+                onClick={() => navigate(`/category/${data.type}/${id}`)}
+              >
+                <div
+                  style={{
+                    background: data.images.length > 0 
+                      ? `url(${data.images[0]}) center no-repeat`
+                      : "none", // Fallback if images is empty
+                    backgroundSize: "cover",
+                  }}
+                  className="relative w-full h-[500px] bg-gray-300"
+                >
+                  {data.images.length === 0 && (
+                    <p className="absolute inset-0 flex items-center justify-center text-white bg-gray-800 bg-opacity-60 text-lg">
+                      No Image Available
+                    </p>
+                  )}
+                </div>
+                <p className="absolute bottom-4 left-4 text-white font-bold bg-[#1aa43d] px-3 py-1 rounded-lg shadow-md">
+                  {data.name}
+                </p>
+                <p className="absolute bottom-4 right-4 text-white font-semibold bg-[#e63946] px-3 py-1 rounded-lg shadow-md">
+                  ${data.regularPrice}
+                  {data.type === "rent" && " / month"}
+                </p>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+      </div>
   );
 }
