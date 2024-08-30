@@ -66,14 +66,14 @@ export default function Slider() {
 
   return (
       <div className="relative flex flex-col md:flex-row lg:mx-auto p-8 rounded-lg shadow-lg bg-gradient-to-r lg:space-x-8 overflow-hidden">
-        <div className="flex flex-col justify-center items-center p-6 gap-8 sm:w-2/6">
-          <h1 style={{ fontFamily: 'Fugaz One, sans-serif' }}  className='text-black font-bold text-4xl lg:text-6xl backdrop-blur-none'>
-              Find Your  <span className='text-green-600 text-4xl lg:text-6xl font-bold' style={{textShadow: '1px 1px 0 #ffffff, -1px -1px 0 #ffffff, 1px -1px 0 #ffffff, -1px 1px 0 #ffffff'}}>
-              Perfect
-            </span> Ride
+        <div className="flex flex-col p-6 gap-8 sm:w-2/6">
+          <h1 style={{ fontFamily: 'Fugaz One, sans-serif' }}  className='text-black font-bold text-4xl lg:text-7xl backdrop-blur-none'>
+              Explore. <span className='text-green-600 text-4xl lg:text-7xl font-bold' style={{textShadow: '1px 1px 0 #ffffff, -1px -1px 0 #ffffff, 1px -1px 0 #ffffff, -1px 1px 0 #ffffff'}}>
+              Choose.
+            </span> Drive.
             <br/>
           </h1>
-          <h1
+          {/* <h1
   style={{ fontFamily: 'Fugaz One, sans-serif' }}
   className='text-black font-bold text-3xl lg:text-4xl backdrop-blur-none'
 >
@@ -84,16 +84,16 @@ export default function Slider() {
 🚗&nbsp;&nbsp;&nbsp;&nbsp;🔍&nbsp;&nbsp;&nbsp;&nbsp;🚙💨
 </h1>
 
-</h1>
+</h1> */}
 
-<p className="text-black text-sm font-medium sm:text-base leading-tight relative z-20">
+<p className="text-slate-600 text-sm font-medium sm:text-base leading-tight relative z-20">
   Welcome to Autovista! Discover your new vehicle with us, whether buying or renting, we have a great selection for you. Explore and find what suits you best!
 </p>
 
           <a 
               href='/search' 
-              className='bg-blue-600 text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-blue-700 transition duration-300'>
-              Start Your Journey
+              className='bg-blue-500 text-white py-2 px-4 rounded-lg font-bold hover:bg-blue-600 transition w-fit justify-end'>
+              Start Your Journey 
           </a>
       </div>
       <div className="bg-gray-200 rounded-lg shadow-lg overflow-hidden sm:w-4/6">
